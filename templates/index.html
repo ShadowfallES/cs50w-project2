@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack-Web50</title>
+
+    <!-----------------------------CSS-ONLY---------------------------------->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <link href="{{ url_for('static',filename='css/styles.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/index.css')}}" rel="stylesheet" type="text/css">
+    <!-----------------------------Socket---------------------------------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="{{ url_for('static',filename='js/index.js')}}"></script>
+</head>
+<body>
+    <div class="container-fluid overflow-auto">
+      <div class="row">
+        <!-----------------------------Sidebar---------------------------------->
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark text-white " style="width: 280px; height: 100vh;">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                  <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+                  <span class="fs-4 text-white">Flack-Web50</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto p-1">
+                  <li class="nav-item overflow-auto" style="height: auto;">
+                    <h4><strong>Canales</strong>&nbsp;<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      +
+                    </button></h4>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title text-dark" id="exampleModalLabel"><strong>Crear un nuevo canal</strong></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                            <div class="modal-body text-dark">
+                              Nombre del Canal
+                              <input type="text" id="new_channels" name="new_channels" class="form-control" placeholder="Canal">
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary" id="Channel_NEW">Save changes</button>
+                            </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div id="listaCanal">
+                      {%for Channelss in Channels %}
+                      <a onclick="selectCanal('{{Channelss}}');" class="nav-link active selectCanal">
+                        {{Channelss}}
+                      </a>
+                      <hr class="my-1">
+                      {%endfor%}
+                    </div>
+                  </li>
+                </ul>
+                <hr>
+                <div class="dropdown">
+                  <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ url_for('static',filename='img/pngegg.png')}}" alt="" width="32" height="32" class="rounded-circle me-2">
+                    <strong class="text-white">{{session['Username']}}</strong>
+                  </a>
+                  <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Configuracion</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a onclick="limpiarLocalStorage();" class="dropdown-item" href="/logout">Cerrar Sesion</a></li>
+                  </ul>
+                </div>
+        </div>
+        <div class="col container-fluid">
+          <div class="row">
+            <!-----------------------------Nav-Bar---------------------------------->
+            <nav class="navbar navbar-light bg-dark">
+              <div class="container-fluid">
+                <span class="navbar-brand mb-2 h1 text-white" id="Room"></span>
+              </div>
+            </nav>
+              <!-----------------------------CHAT-BOX---------------------------------->
+            <div class="container-fluid overflow-auto" style="height: 86vh;">
+              <div id="log" class="sl__chat__layout container-fluid" style="height: auto;">
+                <div data-from="{from}" data-id="{messageId}" id="BoxMessage1" >
+                </div>            
+              </div>
+            </div>
+            </div>
+            <div class="row">
+              <div class="container-fluid card-body p-2" style="height: auto;">                        <!-----------------------------Input-Text---------------------------------->     
+                <div class="form-control">
+                  <div class="input-group container">
+                    <button id="emoji"></button>
+                    <input type="text" class="form-control" id="Mensaje" name= "" placeholder="Escribe un mensaje">
+                    <button type="submit" class="btn" id="enviar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                    </svg> Enviar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+        </div>    
+    </div>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js"></script>
+</body>
+</html>

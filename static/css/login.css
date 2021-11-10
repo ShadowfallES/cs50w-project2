@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #faeee7;
+}
+/*PARTICULA*/
+#particles-js {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.text2 {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 300px;
+  top: calc(50% - 100px);
+  left: calc(50% - 150px);
+}
+
+.img {
+  display: inline-block;
+  height: 100px;
+  z-index: 100;
+}
+
+/*FORMULARIO*/
+.Contenedor{
+    background: #fffffe;  
+}
+.Contenedor form{
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+form .Datos_request{
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 30px 0;
+}
+.Datos_request input{
+    width: 100%;
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+  }
+.Datos_request label{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #adadad;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  transition: .5s;
+}
+.Datos_request span::before{
+content: '';
+position: absolute;
+top: 40px;
+left: 0;
+width: 0%;
+height: 2px;
+background: #2691d9;
+transition: .5s;
+}
+.Datos_request input:focus ~ label,
+.Datos_request input:valid ~ label {
+  top: -5px;
+  color: #2691d9;
+}
+.Datos_request input:focus ~ span::before,
+.Datos_request input:valid ~ span::before {
+width: 100%;
+}
+.btn{         
+display: flex;
+justify-content:center;
+align-items:center;
+}
