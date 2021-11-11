@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
@@ -83,4 +86,8 @@ width: 100%;
 display: flex;
 justify-content:center;
 align-items:center;
+}
+p{
+  font-family: 'Mochiy Pop P One', sans-serif;
+  font-size: 2rem;
 }

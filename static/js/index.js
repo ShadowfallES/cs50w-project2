@@ -1,4 +1,5 @@
-   // Conexion a websocket
+
+// Conexion a websocket
 let socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 var name = localStorage.getItem('Usuario');
 let canales = localStorage.getItem('Canal');
@@ -18,8 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Boton para enviar el mensaje
     $('#enviar').on('click', function (){
         let mensaje = document.querySelector('#Mensaje').value;
+        let mensaje2 = mensaje.trim()
+        if(mensaje2 == "")
+        {
+            alert("Ingrese texto en el campo de mensaje")
+        }else{
         socket.emit('message', {'usuario': name, 'mensaje': mensaje, 'canal':localStorage.getItem('Canal')});
         document.getElementById("Mensaje").value = "";
+        }
+        
     });
 
     // Mensaje a mostrar en la pagina
@@ -55,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else
         {
-            $('#listaCanal').append(`<a onclick="selectCanal('` +data.Canal+ `');" class="nav-link active selectCanal" >`+ data.Canal +`</a>`);
+            $('#listaCanal').append(`<a onclick="selectCanal('` +data.Canal+ `');" class="nav-link active selectCanal" >`+ data.Canal +`</a><hr class="my-1">`);
         } 
         console.log("BUENA BUENA")
     });
@@ -73,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#BoxMessage1').innerHTML = '';
         data.lista_m.forEach(element => {
             if(element.user == name){
-                $('#BoxMessage1').append('<li><div class="messageBox" style="--user-color: #234A65"><span class="meta"><span class="badges"></span><span class="name">'+ element.user + ' ' +element.tiempo +'</span><i class="metaBG"></i></span><span class="message" id="texto-msj">'+ element.msgs + '</span></div></li>' + '<br><br>');
+                $('#BoxMessage1').append('<li><div class="messageBox" style="--user-color: #234A65"><span class="meta"><span class="badges"></span><span class="name">'+ element.user + ' ' +element.tiempo +'</span><i class="metaBG"></i></span><span class="message" id="texto-msj">'+ element.msgs +'</span></div></li>' + '<br><br>');
             }else{
                 $('#BoxMessage1').append('<li><div class="messageBox" style="--user-color: #F4A651"><span class="meta"><span class="badges"></span><span class="name">'+ element.user + ' ' +element.tiempo +'</span><i class="metaBG"></i></span><span class="message"id="texto-msj">'+ element.msgs + '</span></div></li>' + '<br><br>');
             }
@@ -105,9 +113,14 @@ if (!localStorage.getItem('Canal')){
 }else{
     socket.emit('join', {'usuario': name, 'canal':localStorage.getItem('Canal')})
 }
-// TOQUE PERSONAL Button de emoji FASE DE PRUEBA
-$(document).ready(function() {
-    $('#Mensaje').emojioneArea({
-        pickerPosition:"bottom"
+// TOQUE PERSONAL Button de emoji
+window.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('#emoji-button');
+    const picker = new EmojiButton();
+    picker.on('emoji', emoji => {
+      document.querySelector('#Mensaje').value += emoji;
     });
-})
+    button.addEventListener('click', () => {
+      picker.pickerVisible ? picker.hidePicker() : picker.showPicker(button);
+    });
+  });
