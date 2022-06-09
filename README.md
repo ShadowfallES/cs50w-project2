@@ -6,5 +6,5 @@
 - en los mensaje se mostrara el nombre de la persona que lo envio y la hora que fue enviado
 - agregacion de toque personal como el boton de emoticones
 
-- Esta pagina se trabajo con HTML, CSS, Python, SocketIO, Boostrap y tailwindcss
+- Esta pagina se trabajo con HTML, CSS, Python, SocketIO, Bootstrap y Tailwind css
 
